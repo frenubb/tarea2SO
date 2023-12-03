@@ -16,6 +16,8 @@ int main(int argc, char** argv){
 		return -1;
 	}
 
+	auto inicio = chrono::high_resolution_clock::now();
+
 	// metodo conversion
 	for(int f=0; f<image.rows; f++){
 		for(int c=0; c<image.cols; c++){
@@ -27,6 +29,11 @@ int main(int argc, char** argv){
 			image.at<Vec3b>(f, c) = pixel;
 		}
 	}
+
+	auto fin = chrono::high_resolution_clock::now();
+	auto duracion = chrono::duration_cast<chrono::milliseconds>(fin - inicio);
+
+	cout << "Conversion SECUENCIAL completada en " << duracion.count() << " milisegundos" << endl;
 
 	imwrite(argv[2], image);
 	return 0;

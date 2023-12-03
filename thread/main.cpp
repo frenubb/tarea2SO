@@ -34,6 +34,7 @@ int main(int argc, char** argv) {
     int rowsPerThread = image.rows / numThreads;
     vector<thread> threads;
 
+    auto inicio = chrono::high_resolution_clock::now();
     // Crear threads y asignar partes de la imagen a cada uno
     for (int i = 0; i < numThreads; i++) {
         int startRow = i * rowsPerThread;
@@ -45,6 +46,11 @@ int main(int argc, char** argv) {
     for (auto& t : threads) {
         t.join();
     }
+
+    auto fin = chrono::high_resolution_clock::now();
+    auto duracion = chrono::duration_cast<chrono::milliseconds>(fin - inicio);
+
+    cout << "Conversión THREAD completada en " << duracion.count() << " milisegundos" << endl;
 
     // Guardar la imagen en escala de grises
     imwrite(argv[2], image);
