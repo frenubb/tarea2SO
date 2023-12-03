@@ -1,9 +1,9 @@
 # Paralelo con OpenMP
 
 ## Compilación
-Para compilar el programa, utiliza el comando `make` en la carpeta `parallel_openmp`.
+Para compilar el programa, utiliza el comando `make` en la carpeta `Openmp`.
 
 ## Ejecución
 Para ejecutar el programa, se debe emplear el siguiente comando:
 ```bash
-./main images/input.jpg images/output_openmp.jpg
+./main ../imagenes/tyler.jpg ../imagenes/output_openmp.jpg
