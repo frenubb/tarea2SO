@@ -4,11 +4,9 @@
 using namespace cv;
 using namespace std;
 
-// Método de luminosidad para la conversión a escala de grises
-void convertirAByN(Mat& imagenEntrada, Mat& imagenSalida) {
-    // Iterar sobre cada píxel de la imagen
-    #pragma omp parallel for
-    for (int r = 0; r < imagenEntrada.rows; r++) {
+// Método de luminosidad para la conversión a escala de grises (similar a la versión secuencial)
+void convertirAByN(Mat& imagenEntrada, Mat& imagenSalida, int inicioFila, int finFila) {
+    for (int r = inicioFila; r < finFila; r++) {
         for (int c = 0; c < imagenEntrada.cols; c++) {
             Point3_<uchar>* p = imagenEntrada.ptr<Point3_<uchar>>(r, c);
 
@@ -21,8 +19,8 @@ void convertirAByN(Mat& imagenEntrada, Mat& imagenSalida) {
 }
 
 int main(int argc, char *argv[]) {
-    if (argc != 2) {
-        cerr << "Uso: " << argv[0] << " tyler.jpg output_openmp.jpg" << endl;
+    if (argc != 3) {
+        cerr << "Uso: " << argv[0] << " <imagen_entrada> <imagen_salida>" << endl;
         return 1;
     }
 
@@ -40,7 +38,10 @@ int main(int argc, char *argv[]) {
     auto inicio = chrono::high_resolution_clock::now();
 
     // Implementar la conversión a escala de grises con OpenMP
-    convertirAByN(imagenEntrada, imagenSalida);
+    #pragma omp parallel for
+    for (int r = 0; r < imagenEntrada.rows; r++) {
+        convertirAByN(imagenEntrada, imagenSalida, r, r + 1);
+    }
 
     auto fin = chrono::high_resolution_clock::now();
     auto duracion = chrono::duration_cast<chrono::milliseconds>(fin - inicio);
@@ -52,3 +53,4 @@ int main(int argc, char *argv[]) {
 
     return 0;
 }
+
